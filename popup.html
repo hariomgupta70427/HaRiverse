@@ -1,0 +1,464 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HaRiverse - Web Tools</title>
+    <link rel="stylesheet" href="popup.css">
+</head>
+<body>
+    <div class="extension-container">
+        <!-- Header -->
+        <div class="header">
+            <div class="header-content">
+                <div class="logo">
+                    <img src="icons/HariVerse Logo.png" alt="HaRiverse Logo" width="40" height="40" class="logo-image">
+                    <span class="logo-text">HaRiverse</span>
+                </div>
+                <span class="version">v2.0</span>
+            </div>
+            <button class="settings-btn" id="settingsBtn" title="Settings">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <circle cx="12" cy="12" r="3"></circle>
+                    <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1 1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
+                </svg>
+            </button>
+        </div>
+
+        <!-- Tab Navigation -->
+        <div class="tab-nav">
+            <button class="tab-btn active" data-tab="screenshot">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"></path>
+                    <circle cx="12" cy="13" r="4"></circle>
+                </svg>
+                <span>Screenshot</span>
+            </button>
+            <button class="tab-btn" data-tab="colorpicker">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+                </svg>
+                <span>Color</span>
+            </button>
+            <button class="tab-btn" data-tab="qrcode">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <rect x="3" y="3" width="5" height="5"></rect>
+                    <rect x="3" y="16" width="5" height="5"></rect>
+                    <rect x="16" y="3" width="5" height="5"></rect>
+                    <path d="M21 16h-3a2 2 0 0 0-2 2v3"></path>
+                    <path d="M21 21v.01"></path>
+                    <path d="M12 7v3a2 2 0 0 1-2 2H7"></path>
+                    <path d="M3 12h.01"></path>
+                    <path d="M12 3h.01"></path>
+                    <path d="M12 16v.01"></path>
+                    <path d="M16 12h1"></path>
+                    <path d="M21 12v.01"></path>
+                    <path d="M12 21v-1"></path>
+                </svg>
+                <span>QR Code</span>
+            </button>
+            <button class="tab-btn" data-tab="performance">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <circle cx="12" cy="12" r="10"></circle>
+                    <polyline points="12,6 12,12 16,14"></polyline>
+                </svg>
+                <span>Speed Up</span>
+            </button>
+            <button class="tab-btn" data-tab="cookieblocker">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <circle cx="12" cy="12" r="10"></circle>
+                    <path d="m4.9 4.9 14.2 14.2"></path>
+                </svg>
+                <span>Cookie Block</span>
+            </button>
+        </div>
+
+        <!-- Tab Content -->
+        <div class="tab-content">
+            <!-- Screenshot Panel -->
+            <div class="tab-panel active" id="screenshot">
+                <div class="panel-header">
+                    <h3>Full Page Screenshot</h3>
+                    <p>Capture complete webpage screenshots in multiple formats</p>
+                </div>
+                
+                <div class="screenshot-options">
+                    <div class="format-selector">
+                        <label for="screenshotFormat">Format</label>
+                        <select id="screenshotFormat">
+                            <option value="png">PNG (High Quality)</option>
+                            <option value="jpg">JPG (Smaller Size)</option>
+                            <option value="pdf">PDF (Document)</option>
+                        </select>
+                    </div>
+                    <div class="quality-selector">
+                        <label for="screenshotQuality">Quality</label>
+                        <select id="screenshotQuality">
+                            <option value="high">High (100%)</option>
+                            <option value="medium">Medium (85%)</option>
+                            <option value="low">Low (70%)</option>
+                        </select>
+                    </div>
+                </div>
+
+                <button class="primary-btn" id="captureBtn">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"></path>
+                        <circle cx="12" cy="13" r="4"></circle>
+                    </svg>
+                    Capture Full Page
+                </button>
+
+                <div class="progress-container hidden" id="progressContainer">
+                    <div class="progress-bar">
+                        <div class="progress-fill" id="progressFill"></div>
+                    </div>
+                    <div class="progress-text" id="progressText">Preparing...</div>
+                </div>
+
+                <div class="feature-status" id="screenshotStatus"></div>
+            </div>
+
+            <!-- Color Picker Panel -->
+            <div class="tab-panel" id="colorpicker">
+                <div class="panel-header">
+                    <h3>Color Picker</h3>
+                    <p>Extract and analyze colors from any webpage element</p>
+                </div>
+
+                <button class="primary-btn" id="pickColorBtn">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+                    </svg>
+                    Pick Color from Page
+                </button>
+
+                <div class="color-display">
+                    <div class="color-preview">
+                        <div class="color-swatch" id="colorSwatch"></div>
+                    </div>
+                    
+                    <div class="color-codes">
+                        <div class="color-code">
+                            <label>HEX</label>
+                            <div class="code-input">
+                                <input type="text" id="hexValue" readonly>
+                                <button class="copy-btn" data-copy="hex" title="Copy HEX">
+                                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                                        <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                                    </svg>
+                                </button>
+                            </div>
+                        </div>
+                        
+                        <div class="color-code">
+                            <label>RGB</label>
+                            <div class="code-input">
+                                <input type="text" id="rgbValue" readonly>
+                                <button class="copy-btn" data-copy="rgb" title="Copy RGB">
+                                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                                        <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                                    </svg>
+                                </button>
+                            </div>
+                        </div>
+                        
+                        <div class="color-code">
+                            <label>HSL</label>
+                            <div class="code-input">
+                                <input type="text" id="hslValue" readonly>
+                                <button class="copy-btn" data-copy="hsl" title="Copy HSL">
+                                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                                        <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                                    </svg>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="color-palette">
+                    <h4>Recent Colors</h4>
+                    <div class="palette-colors" id="colorPalette">
+                        <!-- Color history will be dynamically populated -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- QR Code Panel -->
+            <div class="tab-panel" id="qrcode">
+                <div class="panel-header">
+                    <h3>QR Code Generator</h3>
+                    <p>Generate QR codes for current page or custom content</p>
+                </div>
+
+                <div class="qr-options">
+                    <div class="form-group">
+                        <label for="qrContent">Content</label>
+                        <textarea id="qrContent" rows="3" placeholder="Enter URL, text, or leave blank for current page"></textarea>
+                    </div>
+                    
+                    <div class="qr-settings">
+                        <div class="qr-size">
+                            <label for="qrSize">Size</label>
+                            <select id="qrSize">
+                                <option value="256">256x256</option>
+                                <option value="512">512x512</option>
+                                <option value="1024">1024x1024</option>
+                            </select>
+                        </div>
+                        <div class="qr-format">
+                            <label for="qrFormat">Format</label>
+                            <select id="qrFormat">
+                                <option value="png">PNG</option>
+                                <option value="jpg">JPG</option>
+                                <option value="svg">SVG</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <button class="primary-btn" id="generateQrBtn">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <rect x="3" y="3" width="5" height="5"></rect>
+                        <rect x="3" y="16" width="5" height="5"></rect>
+                        <rect x="16" y="3" width="5" height="5"></rect>
+                        <path d="M21 16h-3a2 2 0 0 0-2 2v3"></path>
+                        <path d="M21 21v.01"></path>
+                        <path d="M12 7v3a2 2 0 0 1-2 2H7"></path>
+                        <path d="M3 12h.01"></path>
+                        <path d="M12 3h.01"></path>
+                        <path d="M12 16v.01"></path>
+                        <path d="M16 12h1"></path>
+                        <path d="M21 12v.01"></path>
+                        <path d="M12 21v-1"></path>
+                    </svg>
+                    Generate QR Code
+                </button>
+
+                <div class="qr-display">
+                    <div class="qr-placeholder" id="qrPlaceholder">
+                        <div class="qr-placeholder-icon">📱</div>
+                        <p>QR code will appear here</p>
+                    </div>
+                    <canvas id="qrCanvas" style="display: none;"></canvas>
+                </div>
+
+                <button class="secondary-btn hidden" id="downloadQrBtn">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                        <polyline points="7,10 12,15 17,10"></polyline>
+                        <line x1="12" y1="15" x2="12" y2="3"></line>
+                    </svg>
+                    Download QR Code
+                </button>
+            </div>
+
+            <!-- Video Speed Controller Panel -->
+            <div class="tab-panel" id="performance">
+                <div class="panel-header">
+                    <h3>Video Speed Controller</h3>
+                    <p>Control playback speed of videos on the current page</p>
+                </div>
+
+                <div class="speed-controller">
+                    <div class="speed-display">
+                        <div class="current-speed">
+                            <span class="speed-value" id="currentSpeed">1.0</span>
+                            <span class="speed-unit">x</span>
+                        </div>
+                        <div class="speed-label">Current Speed</div>
+                    </div>
+
+                    <div class="speed-slider-container">
+                        <div class="speed-marks">
+                            <span class="mark" data-speed="0.25">0.25x</span>
+                            <span class="mark" data-speed="0.5">0.5x</span>
+                            <span class="mark" data-speed="1">1x</span>
+                            <span class="mark" data-speed="1.5">1.5x</span>
+                            <span class="mark" data-speed="2">2x</span>
+                            <span class="mark" data-speed="3">3x</span>
+                            <span class="mark" data-speed="5">5x</span>
+                        </div>
+                        <input type="range" 
+                               id="speedSlider" 
+                               class="speed-slider"
+                               min="0.25" 
+                               max="5" 
+                               step="0.25" 
+                               value="1">
+                    </div>
+
+                    <div class="speed-presets">
+                        <button class="preset-btn" data-speed="0.25">0.25x</button>
+                        <button class="preset-btn" data-speed="0.5">0.5x</button>
+                        <button class="preset-btn active" data-speed="1">1x</button>
+                        <button class="preset-btn" data-speed="1.25">1.25x</button>
+                        <button class="preset-btn" data-speed="1.5">1.5x</button>
+                        <button class="preset-btn" data-speed="2">2x</button>
+                        <button class="preset-btn" data-speed="3">3x</button>
+                        <button class="preset-btn" data-speed="5">5x</button>
+                    </div>
+
+                    <div class="speed-controls">
+                        <button class="control-btn" id="resetSpeedBtn">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <polyline points="23,4 23,10 17,10"></polyline>
+                                <polyline points="1,20 1,14 7,14"></polyline>
+                                <path d="M20.49,9A9,9,0,0,0,5.64,5.64L1,10m22,4L18.36,18.36A9,9,0,0,1,3.51,15"></path>
+                            </svg>
+                            Reset to 1x
+                        </button>
+                        <button class="control-btn" id="applyToAllBtn">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <polygon points="23,7 16,12 23,17 23,7"></polygon>
+                                <polygon points="14,7 7,12 14,17 14,7"></polygon>
+                            </svg>
+                            Apply to All Videos
+                        </button>
+                    </div>
+
+                    <div class="video-info" id="videoInfo">
+                        <div class="info-item">
+                            <span class="info-label">Videos Found:</span>
+                            <span class="info-value" id="videoCount">0</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-label">Active Video:</span>
+                            <span class="info-value" id="activeVideo">None</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="speed-tips">
+                    <h4>💡 Tips</h4>
+                    <ul>
+                        <li>Use keyboard shortcuts: <kbd>-</kbd> to slow down, <kbd>+</kbd> to speed up</li>
+                        <li>Click on any video to make it the active target</li>
+                        <li>Speed changes persist until page reload</li>
+                        <li>Works with YouTube, Vimeo, and most HTML5 videos</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Cookie Blocker Panel -->
+            <div class="tab-panel" id="cookieblocker">
+                <div class="panel-header">
+                    <h3>Cookie Banner Blocker</h3>
+                    <p>Automatically hide and block annoying cookie consent popups</p>
+                </div>
+
+                <div class="cookie-blocker-controls">
+                    <div class="toggle-container">
+                        <div class="toggle-group">
+                            <label class="toggle-label">
+                                <input type="checkbox" id="cookieBlockerToggle" class="toggle-input">
+                                <span class="toggle-slider"></span>
+                                <span class="toggle-text">Enable Cookie Blocker</span>
+                            </label>
+                            <div class="toggle-status">
+                                <span id="cookieBlockerStatus" class="cookie-blocker-status disabled">Disabled</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="cookie-blocker-info">
+                        <div class="info-card">
+                            <div class="info-icon">
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <circle cx="12" cy="12" r="10"></circle>
+                                    <path d="m4.9 4.9 14.2 14.2"></path>
+                                </svg>
+                            </div>
+                            <div class="info-content">
+                                <h4>How it works</h4>
+                                <p>Automatically detects and hides cookie consent banners using advanced techniques:</p>
+                                <ul class="feature-list">
+                                    <li>Smart banner detection</li>
+                                    <li>Auto-click decline buttons</li>
+                                    <li>CSS-based hiding</li>
+                                    <li>Opt-out cookie injection</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="cookie-blocker-stats">
+                        <div class="stats-card">
+                            <div class="stats-content">
+                                <h4>Statistics</h4>
+                                <div class="stats-text" id="cookieBlockerStats">
+                                    Blocked: 0 banners on 0 sites
+                                </div>
+                                <button class="secondary-btn hidden" id="resetCookieBlockerStats">
+                                    Reset Stats
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="cookie-blocker-tips">
+                        <div class="tips-card">
+                            <h4>💡 Tips</h4>
+                            <ul class="tips-list">
+                                <li>Works automatically once enabled</li>
+                                <li>Blocks most common cookie banners</li>
+                                <li>May not work on all sites</li>
+                                <li>Disable if site functionality breaks</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Toast Container -->
+        <div class="toast-container" id="toastContainer"></div>
+
+        <!-- Settings Modal -->
+        <div class="modal hidden" id="settingsModal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3>Settings</h3>
+                    <button class="modal-close" id="closeSettings">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <div class="settings-section">
+                        <h4>Theme</h4>
+                        <select id="themeSelect">
+                            <option value="auto">Auto (System)</option>
+                            <option value="light">Light</option>
+                            <option value="dark">Dark</option>
+                        </select>
+                    </div>
+                    <div class="settings-section">
+                        <h4>Default Screenshot Format</h4>
+                        <select id="defaultFormat">
+                            <option value="png">PNG</option>
+                            <option value="jpg">JPG</option>
+                            <option value="pdf">PDF</option>
+                        </select>
+                    </div>
+                    <div class="settings-section">
+                        <h4>Auto Download</h4>
+                        <label class="checkbox-container">
+                            <input type="checkbox" id="autoDownload" checked>
+                            <span class="checkmark"></span>
+                            Automatically download captured images
+                        </label>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button class="secondary-btn" id="resetSettings">Reset</button>
+                    <button class="primary-btn" id="saveSettings">Save</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="popup.js"></script>
+</body>
+</html>

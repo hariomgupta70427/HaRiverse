@@ -1,0 +1,399 @@
+/* HaRiverse Cookie Blocker CSS */
+/* This CSS file blocks cookie consent banners and popups */
+
+/* OneTrust Cookie Consent */
+#onetrust-consent-sdk,
+#onetrust-banner-sdk,
+.onetrust-pc-dark-filter,
+.onetrust-pc-sdk,
+[id*="onetrust"] {
+    display: none !important;
+    visibility: hidden !important;
+    opacity: 0 !important;
+    height: 0 !important;
+    width: 0 !important;
+    z-index: -9999 !important;
+    position: absolute !important;
+    left: -9999px !important;
+    top: -9999px !important;
+}
+
+/* Cookiebot */
+#CybotCookiebotDialog,
+#CybotCookiebotDialogBodyContent,
+.CybotCookiebotDialog,
+.CybotCookiebotDialogBody,
+[id*="Cookiebot"],
+[class*="CybotCookiebot"] {
+    display: none !important;
+    visibility: hidden !important;
+    opacity: 0 !important;
+    height: 0 !important;
+    width: 0 !important;
+    z-index: -9999 !important;
+    position: absolute !important;
+    left: -9999px !important;
+    top: -9999px !important;
+}
+
+/* Quantcast Choice */
+.qc-cmp2-container,
+.qc-cmp-ui,
+.qc-cmp-main-messaging,
+.quantcast-overlay,
+[id*="qc-cmp"],
+[class*="qc-cmp"] {
+    display: none !important;
+    visibility: hidden !important;
+    opacity: 0 !important;
+    height: 0 !important;
+    width: 0 !important;
+    z-index: -9999 !important;
+    position: absolute !important;
+    left: -9999px !important;
+    top: -9999px !important;
+}
+
+/* TrustArc (TRUSTe) */
+#truste-consent-track,
+#trustarc-banner-overlay,
+.trustarc-banner,
+.truste_box_overlay,
+[id*="trustarc"],
+[id*="truste"],
+[class*="trustarc"],
+[class*="truste"] {
+    display: none !important;
+    visibility: hidden !important;
+    opacity: 0 !important;
+    height: 0 !important;
+    width: 0 !important;
+    z-index: -9999 !important;
+    position: absolute !important;
+    left: -9999px !important;
+    top: -9999px !important;
+}
+
+/* Generic cookie banners - attribute-based */
+[class*="cookie"]:not([class*="cookie-settings"]):not([class*="cookie-preferences"]),
+[class*="gdpr"],
+[class*="consent"],
+[id*="cookie"]:not([id*="cookie-settings"]):not([id*="cookie-preferences"]),
+[id*="consent"],
+[id*="gdpr"] {
+    display: none !important;
+    visibility: hidden !important;
+    opacity: 0 !important;
+    height: 0 !important;
+    width: 0 !important;
+    z-index: -9999 !important;
+    position: absolute !important;
+    left: -9999px !important;
+    top: -9999px !important;
+}
+
+/* Common cookie banner class patterns */
+.cookie-banner,
+.cookie-notice,
+.cookie-consent,
+.cookie-bar,
+.cookie-message,
+.cookie-policy,
+.cookie-popup,
+.cookie-modal,
+.cookie-overlay,
+.cookie-notification,
+.cookie-alert,
+.cookie-info {
+    display: none !important;
+    visibility: hidden !important;
+    opacity: 0 !important;
+    height: 0 !important;
+    width: 0 !important;
+    z-index: -9999 !important;
+    position: absolute !important;
+    left: -9999px !important;
+    top: -9999px !important;
+}
+
+/* GDPR banners */
+.gdpr-banner,
+.gdpr-notice,
+.gdpr-consent,
+.gdpr-popup,
+.gdpr-modal,
+.gdpr-overlay,
+.gdpr-notification,
+.gdpr-alert,
+.gdpr-info {
+    display: none !important;
+    visibility: hidden !important;
+    opacity: 0 !important;
+    height: 0 !important;
+    width: 0 !important;
+    z-index: -9999 !important;
+    position: absolute !important;
+    left: -9999px !important;
+    top: -9999px !important;
+}
+
+/* Privacy banners */
+.privacy-banner,
+.privacy-notice,
+.privacy-consent,
+.privacy-popup,
+.privacy-modal,
+.privacy-overlay,
+.privacy-notification,
+.privacy-alert,
+.privacy-info {
+    display: none !important;
+    visibility: hidden !important;
+    opacity: 0 !important;
+    height: 0 !important;
+    width: 0 !important;
+    z-index: -9999 !important;
+    position: absolute !important;
+    left: -9999px !important;
+    top: -9999px !important;
+}
+
+/* Consent banners */
+.consent-banner,
+.consent-popup,
+.consent-modal,
+.consent-overlay,
+.consent-notification,
+.consent-alert,
+.consent-info {
+    display: none !important;
+    visibility: hidden !important;
+    opacity: 0 !important;
+    height: 0 !important;
+    width: 0 !important;
+    z-index: -9999 !important;
+    position: absolute !important;
+    left: -9999px !important;
+    top: -9999px !important;
+}
+
+/* Cookie Consent (cc-*) library */
+.cc-banner,
+.cc-window,
+.cc-floating,
+.cc-bottom,
+.cc-top,
+.cc-type-info,
+.cc-type-opt-in,
+.cc-theme-classic,
+.cc-theme-edgeless {
+    display: none !important;
+    visibility: hidden !important;
+    opacity: 0 !important;
+    height: 0 !important;
+    width: 0 !important;
+    z-index: -9999 !important;
+    position: absolute !important;
+    left: -9999px !important;
+    top: -9999px !important;
+}
+
+/* EU Cookie Compliance */
+.eu-cookie-compliance-banner,
+.eu-cookie-compliance-popup,
+.eu-cookie-compliance-wrapper {
+    display: none !important;
+    visibility: hidden !important;
+    opacity: 0 !important;
+    height: 0 !important;
+    width: 0 !important;
+    z-index: -9999 !important;
+    position: absolute !important;
+    left: -9999px !important;
+    top: -9999px !important;
+}
+
+/* Bootstrap modal patterns for cookies */
+.modal[id*="cookie"],
+.modal[id*="consent"],
+.modal[id*="privacy"],
+.modal[class*="cookie"],
+.modal[class*="consent"],
+.modal[class*="privacy"] {
+    display: none !important;
+    visibility: hidden !important;
+    opacity: 0 !important;
+    height: 0 !important;
+    width: 0 !important;
+    z-index: -9999 !important;
+    position: absolute !important;
+    left: -9999px !important;
+    top: -9999px !important;
+}
+
+/* Other popular CMPs */
+.fc-consent-root,
+.fc-dialog-container,
+.fc-dialog-overlay {
+    display: none !important;
+    visibility: hidden !important;
+    opacity: 0 !important;
+    height: 0 !important;
+    width: 0 !important;
+    z-index: -9999 !important;
+    position: absolute !important;
+    left: -9999px !important;
+    top: -9999px !important;
+}
+
+/* Didomi */
+.didomi-popup,
+.didomi-notice,
+.didomi-screen-medium,
+.didomi-consent-popup {
+    display: none !important;
+    visibility: hidden !important;
+    opacity: 0 !important;
+    height: 0 !important;
+    width: 0 !important;
+    z-index: -9999 !important;
+    position: absolute !important;
+    left: -9999px !important;
+    top: -9999px !important;
+}
+
+/* SourcePoint */
+.sp_choice_type_11,
+.sp_choice_type_12,
+.sp_choice_type_13,
+.message-overlay,
+.message-container {
+    display: none !important;
+    visibility: hidden !important;
+    opacity: 0 !important;
+    height: 0 !important;
+    width: 0 !important;
+    z-index: -9999 !important;
+    position: absolute !important;
+    left: -9999px !important;
+    top: -9999px !important;
+}
+
+/* Other CMPs */
+.privacy-manager-tcfv2,
+.evidon-notice-link,
+.ketch-banner,
+.termly-banner,
+.iubenda-cs-overlay,
+.usercentrics-root,
+.uc-banner-modal,
+.cookiescript_injected {
+    display: none !important;
+    visibility: hidden !important;
+    opacity: 0 !important;
+    height: 0 !important;
+    width: 0 !important;
+    z-index: -9999 !important;
+    position: absolute !important;
+    left: -9999px !important;
+    top: -9999px !important;
+}
+
+/* Generic overlay patterns that might be cookie banners */
+div[style*="position: fixed"][style*="z-index: 9999"],
+div[style*="position: fixed"][style*="z-index: 99999"],
+div[style*="position: fixed"][style*="bottom: 0"],
+div[style*="position: fixed"][style*="top: 0"] {
+    /* Only hide if they contain cookie/consent/gdpr related content */
+}
+
+div[style*="position: fixed"][style*="z-index: 9999"]:has([class*="cookie"]),
+div[style*="position: fixed"][style*="z-index: 9999"]:has([class*="consent"]),
+div[style*="position: fixed"][style*="z-index: 9999"]:has([class*="gdpr"]),
+div[style*="position: fixed"][style*="z-index: 99999"]:has([class*="cookie"]),
+div[style*="position: fixed"][style*="z-index: 99999"]:has([class*="consent"]),
+div[style*="position: fixed"][style*="z-index: 99999"]:has([class*="gdpr"]) {
+    display: none !important;
+    visibility: hidden !important;
+    opacity: 0 !important;
+    height: 0 !important;
+    width: 0 !important;
+    z-index: -9999 !important;
+    position: absolute !important;
+    left: -9999px !important;
+    top: -9999px !important;
+}
+
+/* Remove body scroll lock that cookie banners often apply */
+body.modal-open,
+body.no-scroll,
+body.cookie-consent-active,
+body.gdpr-active {
+    overflow: auto !important;
+    padding-right: 0 !important;
+}
+
+/* Remove backdrop/overlay elements */
+.modal-backdrop,
+.cookie-backdrop,
+.consent-backdrop,
+.gdpr-backdrop,
+.privacy-backdrop {
+    display: none !important;
+    visibility: hidden !important;
+    opacity: 0 !important;
+    height: 0 !important;
+    width: 0 !important;
+    z-index: -9999 !important;
+    position: absolute !important;
+    left: -9999px !important;
+    top: -9999px !important;
+}
+
+/* Age verification popups (often combined with cookie consent) */
+.age-verification,
+.age-gate,
+[id*="age-verification"],
+[class*="age-verification"] {
+    display: none !important;
+    visibility: hidden !important;
+    opacity: 0 !important;
+    height: 0 !important;
+    width: 0 !important;
+    z-index: -9999 !important;
+    position: absolute !important;
+    left: -9999px !important;
+    top: -9999px !important;
+}
+
+/* Newsletter signup popups (often shown with cookie consent) */
+.newsletter-popup:has([class*="cookie"]),
+.newsletter-popup:has([class*="consent"]),
+.newsletter-modal:has([class*="cookie"]),
+.newsletter-modal:has([class*="consent"]) {
+    display: none !important;
+    visibility: hidden !important;
+    opacity: 0 !important;
+    height: 0 !important;
+    width: 0 !important;
+    z-index: -9999 !important;
+    position: absolute !important;
+    left: -9999px !important;
+    top: -9999px !important;
+}
+
+/* Bottom/top fixed bars that are often cookie notices */
+div[style*="position: fixed"][style*="bottom: 0"]:has([class*="cookie"]),
+div[style*="position: fixed"][style*="bottom: 0"]:has([class*="consent"]),
+div[style*="position: fixed"][style*="top: 0"]:has([class*="cookie"]),
+div[style*="position: fixed"][style*="top: 0"]:has([class*="consent"]) {
+    display: none !important;
+    visibility: hidden !important;
+    opacity: 0 !important;
+    height: 0 !important;
+    width: 0 !important;
+    z-index: -9999 !important;
+    position: absolute !important;
+    left: -9999px !important;
+    top: -9999px !important;
+}

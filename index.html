@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HaRiverse - Premium Web Extension</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="extension-container">
+        <!-- Header -->
+        <div class="extension-header">
+            <div class="header-content">
+                <h1 class="extension-title">
+                    <span class="extension-icon">🌐</span>
+                    HaRiverse
+                </h1>
+                <span class="version-badge">v1.0.0</span>
+            </div>
+            <button class="settings-btn" id="settingsBtn" aria-label="Settings">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <circle cx="12" cy="12" r="3"></circle>
+                    <path d="m12 1 0 6m0 6 0 6"></path>
+                    <path d="m12 7 0-6m0 6 0 6"></path>
+                    <path d="m21 12-6 0m-6 0-6 0"></path>
+                </svg>
+            </button>
+        </div>
+
+        <!-- Tab Navigation -->
+        <div class="tab-navigation">
+            <button class="tab-btn active" data-tab="screenshot">
+                <span class="tab-icon">📸</span>
+                Screenshot
+            </button>
+            <button class="tab-btn" data-tab="colorpicker">
+                <span class="tab-icon">🎨</span>
+                Color Picker
+            </button>
+            <button class="tab-btn" data-tab="ruler">
+                <span class="tab-icon">📏</span>
+                Page Ruler
+            </button>
+            <button class="tab-btn" data-tab="qr">
+                <span class="tab-icon">📱</span>
+                QR Code
+            </button>
+        </div>
+
+        <!-- Tab Content -->
+        <div class="tab-content">
+            <!-- Screenshot Tab -->
+            <div class="tab-panel active" id="screenshot">
+                <div class="feature-header">
+                    <h3>Full Page Screenshot</h3>
+                    <p>Capture complete webpage screenshots in multiple formats</p>
+                </div>
+                
+                <div class="feature-controls">
+                    <div class="capture-options">
+                        <label class="form-label">Format:</label>
+                        <select class="form-control" id="screenshotFormat">
+                            <option value="png">PNG (High Quality)</option>
+                            <option value="jpg">JPG (Compressed)</option>
+                            <option value="pdf">PDF (Document)</option>
+                        </select>
+                    </div>
+                    
+                    <div class="capture-options">
+                        <label class="form-label">Quality:</label>
+                        <select class="form-control" id="screenshotQuality">
+                            <option value="high">Full HD (1920x1080)</option>
+                            <option value="medium">HD (1280x720)</option>
+                            <option value="low">Standard (854x480)</option>
+                        </select>
+                    </div>
+                    
+                    <button class="btn btn--primary btn--full-width" id="captureBtn">
+                        <span class="btn-icon">📸</span>
+                        Capture Full Page
+                    </button>
+                </div>
+                
+                <div class="progress-container hidden" id="progressContainer">
+                    <div class="progress-bar">
+                        <div class="progress-fill" id="progressFill"></div>
+                    </div>
+                    <div class="progress-text" id="progressText">Preparing capture...</div>
+                </div>
+
+                <div class="feature-status" id="screenshotStatus"></div>
+            </div>
+
+            <!-- Color Picker Tab -->
+            <div class="tab-panel" id="colorpicker">
+                <div class="feature-header">
+                    <h3>Advanced Color Picker</h3>
+                    <p>Extract and analyze colors from any webpage element</p>
+                </div>
+                
+                <div class="feature-controls">
+                    <button class="btn btn--primary btn--full-width" id="pickColorBtn">
+                        <span class="btn-icon">🎨</span>
+                        Pick Color from Page
+                    </button>
+                    
+                    <div class="color-display" id="colorDisplay">
+                        <div class="color-preview" id="colorPreview">
+                            <div class="color-swatch" id="colorSwatch" style="background-color: #6366f1;"></div>
+                            <div class="color-info">
+                                <h4>Selected Color</h4>
+                                <div class="color-codes">
+                                    <div class="color-code">
+                                        <label>HEX:</label>
+                                        <input type="text" class="form-control" id="hexValue" value="#6366f1" readonly>
+                                        <button class="copy-btn" data-copy="hex">📋</button>
+                                    </div>
+                                    <div class="color-code">
+                                        <label>RGB:</label>
+                                        <input type="text" class="form-control" id="rgbValue" value="rgb(99, 102, 241)" readonly>
+                                        <button class="copy-btn" data-copy="rgb">📋</button>
+                                    </div>
+                                    <div class="color-code">
+                                        <label>HSL:</label>
+                                        <input type="text" class="form-control" id="hslValue" value="hsl(237, 84%, 67%)" readonly>
+                                        <button class="copy-btn" data-copy="hsl">📋</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="color-history" id="colorHistory">
+                        <h4>Color History</h4>
+                        <div class="color-palette" id="colorPalette">
+                            <div class="palette-color" style="background-color: #6366f1;" data-color="#6366f1"></div>
+                            <div class="palette-color" style="background-color: #8b5cf6;" data-color="#8b5cf6"></div>
+                            <div class="palette-color" style="background-color: #ec4899;" data-color="#ec4899"></div>
+                            <div class="palette-color" style="background-color: #10b981;" data-color="#10b981"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Page Ruler Tab -->
+            <div class="tab-panel" id="ruler">
+                <div class="feature-header">
+                    <h3>Page Ruler & Measurements</h3>
+                    <p>Measure elements and distances with pixel precision</p>
+                </div>
+                
+                <div class="feature-controls">
+                    <div class="ruler-options">
+                        <label class="form-label">Unit:</label>
+                        <select class="form-control" id="rulerUnit">
+                            <option value="px">Pixels (px)</option>
+                            <option value="rem">REM</option>
+                            <option value="em">EM</option>
+                        </select>
+                    </div>
+                    
+                    <button class="btn btn--primary btn--full-width" id="startRulerBtn">
+                        <span class="btn-icon">📏</span>
+                        Start Measuring
+                    </button>
+                    
+                    <div class="measurement-display" id="measurementDisplay">
+                        <div class="measurement-item">
+                            <label>Width:</label>
+                            <span id="measureWidth">-- px</span>
+                        </div>
+                        <div class="measurement-item">
+                            <label>Height:</label>
+                            <span id="measureHeight">-- px</span>
+                        </div>
+                        <div class="measurement-item">
+                            <label>Distance:</label>
+                            <span id="measureDistance">-- px</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- QR Code Tab -->
+            <div class="tab-panel" id="qr">
+                <div class="feature-header">
+                    <h3>QR Code Generator</h3>
+                    <p>Generate QR codes for current page or custom content</p>
+                </div>
+                
+                <div class="feature-controls">
+                    <div class="qr-options">
+                        <label class="form-label">Content:</label>
+                        <textarea class="form-control" id="qrContent" placeholder="Enter text or URL to generate QR code" rows="3"></textarea>
+                    </div>
+                    
+                    <div class="qr-options">
+                        <label class="form-label">Size:</label>
+                        <select class="form-control" id="qrSize">
+                            <option value="128">Small (128x128)</option>
+                            <option value="256">Medium (256x256)</option>
+                            <option value="512">Large (512x512)</option>
+                        </select>
+                    </div>
+                    
+                    <button class="btn btn--primary btn--full-width" id="generateQrBtn">
+                        <span class="btn-icon">📱</span>
+                        Generate QR Code
+                    </button>
+                    
+                    <div class="qr-display" id="qrDisplay">
+                        <canvas id="qrCanvas" style="display: none;"></canvas>
+                        <div class="qr-placeholder">
+                            <div class="qr-placeholder-icon">📱</div>
+                            <p>QR code will appear here</p>
+                        </div>
+                    </div>
+                    
+                    <button class="btn btn--outline btn--full-width hidden" id="downloadQrBtn">
+                        <span class="btn-icon">💾</span>
+                        Download QR Code
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <div class="extension-footer">
+            <div class="footer-info">
+                <span class="status-indicator active"></span>
+                <span>Extension Active</span>
+            </div>
+            <div class="footer-links">
+                <a href="#" class="footer-link">Help</a>
+                <a href="#" class="footer-link">Feedback</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Settings Modal -->
+    <div class="modal hidden" id="settingsModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Extension Settings</h3>
+                <button class="modal-close" id="closeSettings">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="settings-section">
+                    <h4>Appearance</h4>
+                    <div class="setting-item">
+                        <label class="form-label">Theme:</label>
+                        <select class="form-control" id="themeSelect">
+                            <option value="dark">Dark Theme</option>
+                            <option value="light">Light Theme</option>
+                            <option value="auto">Auto</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <div class="settings-section">
+                    <h4>Default Settings</h4>
+                    <div class="setting-item">
+                        <label class="form-label">Default Screenshot Format:</label>
+                        <select class="form-control" id="defaultFormat">
+                            <option value="png">PNG</option>
+                            <option value="jpg">JPG</option>
+                            <option value="pdf">PDF</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn--outline" id="resetSettings">Reset to Default</button>
+                <button class="btn btn--primary" id="saveSettings">Save Settings</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Notifications -->
+    <div class="toast-container" id="toastContainer"></div>
+
+    <script src="app.js"></script>
+</body>
+</html>

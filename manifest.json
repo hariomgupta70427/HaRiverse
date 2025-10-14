@@ -1,0 +1,55 @@
+{
+  "manifest_version": 3,
+  "name": "HaRiverse - Premium Web Extension",
+  "version": "2.0.0",
+  "description": "Professional web extension with full-page screenshots, color picker, QR generator, video speed controller, and cookie blocker",
+  
+  "icons": {
+    "16": "icons/icon16.png",
+    "48": "icons/icon48.png",
+    "128": "icons/icon128.png"
+  },
+  
+  "action": {
+    "default_popup": "popup.html",
+    "default_title": "HaRiverse - Web Tools",
+    "default_icon": {
+      "16": "icons/icon16.png",
+      "48": "icons/icon48.png",
+      "128": "icons/icon128.png"
+    }
+  },
+  
+  "background": {
+    "service_worker": "background.js",
+    "type": "module"
+  },
+  
+  "content_scripts": [
+    {
+      "matches": ["<all_urls>"],
+      "js": ["content.js"],
+      "css": ["cookie-blocker.css"],
+      "run_at": "document_start"
+    }
+  ],
+  
+  "permissions": [
+    "activeTab",
+    "tabs",
+    "storage",
+    "downloads",
+    "scripting"
+  ],
+  
+  "host_permissions": [
+    "<all_urls>"
+  ],
+  
+  "web_accessible_resources": [
+    {
+      "resources": ["icons/*", "assets/*"],
+      "matches": ["<all_urls>"]
+    }
+  ]
+}
