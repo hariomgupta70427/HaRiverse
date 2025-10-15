@@ -6,7 +6,7 @@ console.log('HaRiverse background service worker v2.0 starting...');
 class CaptureRateLimiter {
     constructor() {
         this.captureTimestamps = [];
-        this.maxCapturesPerSecond = 2;
+        this.maxCapturesPerSecond = 1;
     }
 
     async waitForNextCapture() {
@@ -17,7 +17,7 @@ class CaptureRateLimiter {
 
         if (this.captureTimestamps.length >= this.maxCapturesPerSecond) {
             const oldestCapture = Math.min(...this.captureTimestamps);
-            const waitTime = 1000 - (now - oldestCapture) + 50;
+            const waitTime = 1000 - (now - oldestCapture) + 200;
             if (waitTime > 0) {
                 console.log(`Rate limiting: waiting ${waitTime}ms`);
                 await new Promise(resolve => setTimeout(resolve, waitTime));
@@ -46,6 +46,98 @@ chrome.runtime.onInstalled.addListener((details) => {
 });
 
 // Message handler will be defined after all functions
+
+// ===== FULL PAGE SCREENSHOT WITH SCROLL =====
+async function handleSimpleFullPageCapture(message, sender, sendResponse) {
+    try {
+        const tab = await chrome.tabs.get(message.tabId);
+        
+        // Get page dimensions
+        const [result] = await chrome.scripting.executeScript({
+            target: { tabId: message.tabId },
+            func: () => {
+                const fullHeight = Math.max(
+                    document.body.scrollHeight,
+                    document.documentElement.scrollHeight
+                );
+                const fullWidth = Math.max(
+                    document.body.scrollWidth,
+                    document.documentElement.scrollWidth
+                );
+                const viewportHeight = window.innerHeight;
+                const viewportWidth = window.innerWidth;
+                
+                return { fullHeight, fullWidth, viewportHeight, viewportWidth };
+            }
+        });
+        
+        const { fullHeight, fullWidth, viewportHeight, viewportWidth } = result.result;
+        
+        // Create canvas for full page
+        const canvas = new OffscreenCanvas(fullWidth, fullHeight);
+        const ctx = canvas.getContext('2d');
+        
+        // Calculate scroll positions
+        const verticalSteps = Math.ceil(fullHeight / viewportHeight);
+        const horizontalSteps = Math.ceil(fullWidth / viewportWidth);
+        
+        for (let row = 0; row < verticalSteps; row++) {
+            for (let col = 0; col < horizontalSteps; col++) {
+                const scrollX = col * viewportWidth;
+                const scrollY = row * viewportHeight;
+                
+                // Scroll to position
+                await chrome.scripting.executeScript({
+                    target: { tabId: message.tabId },
+                    func: (x, y) => window.scrollTo(x, y),
+                    args: [scrollX, scrollY]
+                });
+                
+                await new Promise(resolve => setTimeout(resolve, 800));
+                
+                // Capture visible area with rate limiting
+                await captureRateLimiter.waitForNextCapture();
+                const dataUrl = await chrome.tabs.captureVisibleTab(tab.windowId, {
+                    format: 'png',
+                    quality: 100
+                });
+                
+                // Additional delay after capture
+                await new Promise(resolve => setTimeout(resolve, 500));
+                
+                // Draw on canvas
+                const response = await fetch(dataUrl);
+                const blob = await response.blob();
+                const img = await createImageBitmap(blob);
+                
+                ctx.drawImage(img, scrollX, scrollY);
+            }
+        }
+        
+        // Convert canvas to blob
+        const finalBlob = await canvas.convertToBlob({
+            type: message.format === 'jpg' ? 'image/jpeg' : 'image/png',
+            quality: 1.0
+        });
+        
+        // Convert to data URL
+        const reader = new FileReader();
+        reader.onload = () => {
+            sendResponse({ success: true, dataUrl: reader.result });
+        };
+        reader.readAsDataURL(finalBlob);
+        
+        // Scroll back to top
+        await chrome.scripting.executeScript({
+            target: { tabId: message.tabId },
+            func: () => window.scrollTo(0, 0)
+        });
+        
+    } catch (error) {
+        console.error('Screenshot failed:', error);
+        sendResponse({ success: false, error: error.message });
+    }
+}
 
 // ===== SCREENSHOT FUNCTIONALITY =====
 async function handleFullPageCapture(message, sender, sendResponse) {
@@ -1056,7 +1148,7 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
     
     switch (message.action) {
         case 'captureFullPage':
-            handleFullPageCapture(message, sender, sendResponse);
+            handleSimpleFullPageCapture(message, sender, sendResponse);
             return true;
         case 'downloadImage':
             handleDownloadImage(message, sender, sendResponse);

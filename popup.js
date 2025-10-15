@@ -8,6 +8,7 @@ class HaRiversePopup {
         this.isAnalyzing = false;
         this.currentColor = '#6366f1';
         this.settings = this.loadSettings();
+        this.currentTheme = this.loadTheme();
         this.init();
     }
 
@@ -17,14 +18,15 @@ class HaRiversePopup {
         this.updateColorDisplay(this.currentColor);
         this.updateColorPalette();
         this.initializeQRContent();
+        this.initTheme();
         console.log('HaRiverse popup v2.0 initialized');
     }
 
     setupEventListeners() {
-        // Tab navigation
-        document.querySelectorAll('.tab-btn').forEach(btn => {
+        // Feature navigation
+        document.querySelectorAll('.feature-btn').forEach(btn => {
             btn.addEventListener('click', (e) => {
-                const tab = e.target.closest('.tab-btn').dataset.tab;
+                const tab = e.target.closest('.feature-btn').dataset.tab;
                 this.switchTab(tab);
             });
         });
@@ -66,6 +68,9 @@ class HaRiversePopup {
         // Cookie Blocker
         this.initCookieBlocker();
 
+        // Theme Toggle
+        this.initThemeToggle();
+
         // Settings functionality
         const settingsBtn = document.getElementById('settingsBtn');
         if (settingsBtn) {
@@ -85,6 +90,12 @@ class HaRiversePopup {
         const resetSettings = document.getElementById('resetSettings');
         if (resetSettings) {
             resetSettings.addEventListener('click', () => this.resetSettings());
+        }
+
+        // Theme toggle functionality
+        const themeToggleBtn = document.getElementById('themeToggleBtn');
+        if (themeToggleBtn) {
+            themeToggleBtn.addEventListener('click', () => this.toggleTheme());
         }
 
         // Palette color clicks
@@ -132,8 +143,8 @@ class HaRiversePopup {
     }
 
     switchTab(tabName) {
-        // Update active tab button
-        document.querySelectorAll('.tab-btn').forEach(btn => {
+        // Update active feature button
+        document.querySelectorAll('.feature-btn').forEach(btn => {
             btn.classList.remove('active');
         });
         document.querySelector(`[data-tab="${tabName}"]`).classList.add('active');
@@ -168,7 +179,10 @@ class HaRiversePopup {
             // Get current tab
             const [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
 
-            // Send message to background script
+            this.updateStatus('Preparing screenshot...');
+            this.updateProgress(10);
+
+            // Use Chrome DevTools Protocol for full page screenshot
             const response = await chrome.runtime.sendMessage({
                 action: 'captureFullPage',
                 tabId: tab.id,
@@ -184,7 +198,7 @@ class HaRiversePopup {
                     await this.downloadImage(response.dataUrl, format);
                 }
                 
-                this.showToast('success', 'Success', 'Screenshot captured successfully!');
+                this.showToast('success', 'Success', 'Full page screenshot captured!');
             } else {
                 throw new Error(response.error || 'Failed to capture screenshot');
             }
@@ -961,6 +975,143 @@ class HaRiversePopup {
 
     saveSettingsToStorage() {
         localStorage.setItem('hariverse-settings', JSON.stringify(this.settings));
+    }
+
+    // ===== THEME FUNCTIONALITY =====
+    initTheme() {
+        this.applyTheme(this.currentTheme);
+        this.updateThemeIcon();
+    }
+
+    toggleTheme() {
+        this.currentTheme = this.currentTheme === 'light' ? 'dark' : 'light';
+        this.applyTheme(this.currentTheme);
+        this.updateThemeIcon();
+        this.saveTheme();
+    }
+
+    applyTheme(theme) {
+        document.documentElement.setAttribute('data-color-scheme', theme);
+    }
+
+    updateThemeIcon() {
+        const sunIcon = document.querySelector('.sun-icon');
+        const moonIcon = document.querySelector('.moon-icon');
+        
+        if (sunIcon && moonIcon) {
+            if (this.currentTheme === 'dark') {
+                sunIcon.style.display = 'block';
+                moonIcon.style.display = 'none';
+            } else {
+                sunIcon.style.display = 'none';
+                moonIcon.style.display = 'block';
+            }
+        }
+    }
+
+    loadTheme() {
+        const stored = localStorage.getItem('hariverse-theme');
+        if (stored) {
+            return stored;
+        }
+        // Default to system preference
+        return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+    }
+
+    saveTheme() {
+        localStorage.setItem('hariverse-theme', this.currentTheme);
+    }
+
+    // ===== WEBSITE THEME TOGGLE FUNCTIONALITY =====
+    initThemeToggle() {
+        this.websiteThemeIsDark = false;
+        
+        const toggleBtn = document.getElementById('websiteThemeToggle');
+        if (toggleBtn) {
+            toggleBtn.addEventListener('click', () => this.toggleWebsiteTheme());
+        }
+        
+        this.updateWebsiteThemeUI();
+    }
+    
+    async toggleWebsiteTheme() {
+        this.websiteThemeIsDark = !this.websiteThemeIsDark;
+        
+        try {
+            const [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
+            
+            await chrome.tabs.sendMessage(tab.id, {
+                action: 'toggleWebsiteTheme',
+                isDark: this.websiteThemeIsDark
+            });
+            
+            this.updateWebsiteThemeUI();
+            this.showToast('success', 'Theme Toggled', `Website theme changed to ${this.websiteThemeIsDark ? 'dark' : 'light'} mode`);
+            
+        } catch (error) {
+            try {
+                const [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
+                await chrome.scripting.executeScript({
+                    target: { tabId: tab.id },
+                    files: ['content.js']
+                });
+                
+                await new Promise(resolve => setTimeout(resolve, 100));
+                
+                await chrome.tabs.sendMessage(tab.id, {
+                    action: 'toggleWebsiteTheme',
+                    isDark: this.websiteThemeIsDark
+                });
+                
+                this.updateWebsiteThemeUI();
+                this.showToast('success', 'Theme Toggled', `Website theme changed to ${this.websiteThemeIsDark ? 'dark' : 'light'} mode`);
+                
+            } catch (injectionError) {
+                this.websiteThemeIsDark = !this.websiteThemeIsDark;
+                this.showToast('error', 'Error', 'Cannot change theme on this page');
+            }
+        }
+    }
+    
+    updateWebsiteThemeUI() {
+        const toggleBtn = document.getElementById('websiteThemeToggle');
+        const themeIcon = document.querySelector('.theme-icon-large');
+        const themeTitle = document.getElementById('currentThemeTitle');
+        const themeDesc = document.getElementById('currentThemeDesc');
+        
+        if (this.websiteThemeIsDark) {
+            if (themeIcon) themeIcon.classList.add('dark-mode');
+            if (themeTitle) themeTitle.textContent = 'Dark Mode';
+            if (themeDesc) themeDesc.textContent = 'Website is in dark theme';
+            if (toggleBtn) {
+                toggleBtn.innerHTML = `
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                    Switch to Light Mode
+                `;
+            }
+        } else {
+            if (themeIcon) themeIcon.classList.remove('dark-mode');
+            if (themeTitle) themeTitle.textContent = 'Light Mode';
+            if (themeDesc) themeDesc.textContent = 'Website is in light theme';
+            if (toggleBtn) {
+                toggleBtn.innerHTML = `
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                    Switch to Dark Mode
+                `;
+            }
+        }
     }
 }
 

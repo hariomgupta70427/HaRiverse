@@ -57,6 +57,10 @@ class HaRiverseContent {
                 case 'getPageInfo':
                     sendResponse(this.getPageInfo());
                     break;
+                case 'toggleWebsiteTheme':
+                    this.toggleWebsiteTheme(message.isDark);
+                    sendResponse({ success: true });
+                    break;
                 default:
                     console.log('Unknown action:', message.action);
                     sendResponse({ success: false, error: 'Unknown action' });
@@ -750,6 +754,46 @@ class HaRiverseContent {
             window.hariverseeCookieBlocker.destroy();
             delete window.hariverseeCookieBlocker;
         }
+    }
+
+    // ===== WEBSITE THEME TOGGLE FUNCTIONALITY =====
+    toggleWebsiteTheme(isDark) {
+        const existingStyle = document.getElementById('hariverse-theme-style');
+        if (existingStyle) {
+            existingStyle.remove();
+        }
+
+        const style = document.createElement('style');
+        style.id = 'hariverse-theme-style';
+        
+        if (isDark) {
+            style.textContent = `
+                html {
+                    filter: invert(1) hue-rotate(180deg) !important;
+                    transition: filter 0.3s ease !important;
+                }
+                
+                img, video, iframe, svg, canvas, embed, object {
+                    filter: invert(1) hue-rotate(180deg) !important;
+                }
+                
+                [style*="background-image"] {
+                    filter: invert(1) hue-rotate(180deg) !important;
+                }
+            `;
+        } else {
+            style.textContent = `
+                html {
+                    filter: none !important;
+                    transition: filter 0.3s ease !important;
+                }
+            `;
+        }
+        
+        document.head.appendChild(style);
+        document.documentElement.setAttribute('data-hariverse-theme', isDark ? 'dark' : 'light');
+        
+        console.log(`HaRiverse: Toggled website theme to ${isDark ? 'dark' : 'light'} mode`);
     }
 }
 
